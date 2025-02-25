@@ -1,4 +1,4 @@
-# ์VSCode Emoji - Bring Noto Emoji and Noto Color Emoji Fonts to VSCode
+#VSCode Emoji - Bring Noto Emoji and Noto Color Emoji Fonts to VSCode
 
 **VSCode Emoji** enables the use of Noto Emoji and Noto Color Emoji fonts in Visual Studio Code, ensuring better emoji rendering and a more consistent visual experience across platforms.
 
