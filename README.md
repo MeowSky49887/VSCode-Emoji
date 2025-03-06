@@ -4,7 +4,7 @@
 
 ## 🎉 Features 🎉
 
-* Supportsboth monochrome and color Noto Emoji fonts.
+* Supports both monochrome and color Noto Emoji fonts.
 * Enhances emoji display in VSCode.
 * Simple setup and integration.
 

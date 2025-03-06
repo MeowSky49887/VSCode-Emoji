@@ -3,33 +3,42 @@ const fs = require("fs");
 const path = require("path");
 const { Window } = require("happy-dom");
 
+const appDir = require.main ? path.dirname(require.main.filename) : globalThis._VSCODE_FILE_ROOT;
+if (!appDir) return vscode.window.showInformationMessage("Unable to locate VS Code installation path. Please Reinstall VSCode.");
+
+const base = path.join(appDir, "vs", "code");
+let htmlFile = path.join(base, "electron-sandbox", "workbench", "workbench.html");
+if (!fs.existsSync(htmlFile)) return vscode.window.showInformationMessage("Unable to locate workbench.html. Please Reinstall VSCode.");
+	
 async function activate(context) {
-	const appDir = require.main ? path.dirname(require.main.filename) : globalThis._VSCODE_FILE_ROOT;
-	if (!appDir) return vscode.window.showInformationMessage("Unable to locate VS Code installation path");
-
-	const base = path.join(appDir, "vs", "code");
-	let htmlFile = path.join(base, "electron-sandbox", "workbench", "workbench.html");
-	if (!fs.existsSync(htmlFile)) return vscode.window.showInformationMessage("Unable to locate workbench.html");
-
 	async function installEmoji() {
+		const backupFile = path.join(base, "electron-sandbox", "workbench", "workbench.html.backup");
+	
 		let html = await fs.promises.readFile(htmlFile, "utf-8");
-
-		const window = new Window()
-		window.document.write(html);
-
+	
+		if (!fs.existsSync(backupFile)) {
+			await fs.promises.rename(htmlFile, backupFile);
+			vscode.window.showInformationMessage("Original workbench.html backed up.");
+		}
+	
 		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n\n*/, "");
-
+	
+		const window = new Window();
+		window.document.write(html);
+	
 		const metaCSP = window.document.querySelector('meta[http-equiv="Content-Security-Policy"]');
 		const orgCSP = metaCSP.getAttribute("content").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
 		const addCSP = "style-src https://fonts.googleapis.com; font-src https://fonts.gstatic.com;";
-		
+
+		metaCSP.remove();
+	
 		let directives = new Map();
-		
+	
 		orgCSP.split(";").forEach(rule => {
 			let parts = rule.trim().split(/\s+/);
 			if (parts.length > 1) directives.set(parts[0], new Set(parts.slice(1)));
 		});
-
+	
 		addCSP.split(";").forEach(rule => {
 			let parts = rule.trim().split(/\s+/);
 			if (parts.length > 1) {
@@ -39,24 +48,29 @@ async function activate(context) {
 				parts.slice(1).forEach(value => directives.get(parts[0]).add(value));
 			}
 		});
-
-		newCSP = [...directives.entries()]
+	
+		const newCSP = [...directives.entries()]
 			.map(([key, values]) => `${key} ${[...values].join(" ")}`)
 			.join("; ");
-
-		metaCSP.setAttribute("content", newCSP);
-		
+	
+		const newMetaCSP = `<meta http-equiv="Content-Security-Policy" content="${newCSP}">`;
+	
 		const styles = `
 		<!-- !! NOTO-EMOJI-START !! -->
-		${metaCSP.outerHTML}
+		${newMetaCSP}
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Emoji&display=swap" rel="stylesheet">
 		<!-- !! NOTO-EMOJI-END !! -->`;
-		html = html.replace(/(<head>)/, `<head>${styles}\n`);
-		
-		await fs.promises.writeFile(htmlFile, html, "utf-8"); 
-
+	
+		// Instead of insertBefore, append the styles directly
+		const headElement = window.document.querySelector('head');
+		headElement.innerHTML = `${styles}\n` + headElement.innerHTML;
+	
+		console.log(window.document.documentElement.outerHTML);
+	
+		await fs.promises.writeFile(htmlFile, window.document.documentElement.outerHTML, "utf-8");
+	
 		vscode.window.showInformationMessage("Noto Emoji installed. Restart VS Code to apply changes.");
 	}
 
@@ -76,26 +90,25 @@ async function activate(context) {
 	context.subscriptions.push(disposable);
 
 	await installEmoji()
-	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Activated");
+	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Activated.");
 }
 
 async function deactivate() {
-    const appDir = require.main ? path.dirname(require.main.filename) : globalThis._VSCODE_FILE_ROOT;
-	if (!appDir) return vscode.window.showInformationMessage("Unable to locate VS Code installation path");
+    const backupFile = path.join(base, "electron-sandbox", "workbench", "workbench.html.backup");
 
-	const base = path.join(appDir, "vs", "code");
-	let htmlFile = path.join(base, "electron-sandbox", "workbench", "workbench.html");
-	if (!fs.existsSync(htmlFile)) return vscode.window.showInformationMessage("Unable to locate workbench.html");
+    if (fs.existsSync(backupFile)) {
+        if (fs.existsSync(htmlFile)) {
+            await fs.promises.unlink(htmlFile);
+        }
+		
+        await fs.promises.rename(backupFile, htmlFile);
 
-	async function uninstallEmoji() {
-		let html = await fs.promises.readFile(htmlFile, "utf-8");
-		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n\n*/, "");
-		await fs.promises.writeFile(htmlFile, html, "utf-8");
-		vscode.window.showInformationMessage("Noto Emoji removed. Restart VS Code to apply changes.");
-	}
-    
-    await uninstallEmoji();
-	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Deactivated");
+        vscode.window.showInformationMessage("Noto Emoji removed. Restart VS Code to apply changes.");
+    } else {
+        vscode.window.showInformationMessage("No backup found to restore. Please reinstall VSCode.");
+    }
+	
+	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Deactivated.");
 }
 
 function getWebviewContent(unicode, panel) {
@@ -216,6 +229,6 @@ async function fetchEmojis() {
 }
 
 module.exports = {
-	activate//,
-	//deactivate
+	activate,
+	deactivate
 }

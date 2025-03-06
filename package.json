@@ -3,7 +3,7 @@
   "displayName": "VSCode Emoji",
   "description": "Noto Emoji for VSCode",
   "icon": "VSCodeEmoji.png",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "MeowIsWorking",
   "license": "CC-BY-SA-4.0",
   "repository": {
