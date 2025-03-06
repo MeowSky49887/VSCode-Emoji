@@ -216,6 +216,6 @@ async function fetchEmojis() {
 }
 
 module.exports = {
-	activate,
-	deactivate
+	activate//,
+	//deactivate
 }
