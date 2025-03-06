@@ -20,9 +20,7 @@ async function activate(context) {
 			await fs.promises.rename(htmlFile, backupFile);
 			vscode.window.showInformationMessage("Original workbench.html backed up.");
 		}
-	
-		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n\n*/, "");
-	
+		
 		const window = new Window();
 		window.document.write(html);
 	
@@ -66,10 +64,8 @@ async function activate(context) {
 		// Instead of insertBefore, append the styles directly
 		const headElement = window.document.querySelector('head');
 		headElement.innerHTML = `${styles}\n` + headElement.innerHTML;
-	
-		console.log(window.document.documentElement.outerHTML);
-	
-		await fs.promises.writeFile(htmlFile, window.document.documentElement.outerHTML, "utf-8");
+
+		await fs.promises.writeFile(htmlFile, html.replace(/<head>[\s\S]*<\/head>/, headElement.outerHTML), "utf-8");
 	
 		vscode.window.showInformationMessage("Noto Emoji installed. Restart VS Code to apply changes.");
 	}
@@ -91,24 +87,6 @@ async function activate(context) {
 
 	await installEmoji()
 	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Activated.");
-}
-
-async function deactivate() {
-    const backupFile = path.join(base, "electron-sandbox", "workbench", "workbench.html.backup");
-
-    if (fs.existsSync(backupFile)) {
-        if (fs.existsSync(htmlFile)) {
-            await fs.promises.unlink(htmlFile);
-        }
-		
-        await fs.promises.rename(backupFile, htmlFile);
-
-        vscode.window.showInformationMessage("Noto Emoji removed. Restart VS Code to apply changes.");
-    } else {
-        vscode.window.showInformationMessage("No backup found to restore. Please reinstall VSCode.");
-    }
-	
-	vscode.window.showInformationMessage("Minimal Noto Emoji Extension Deactivated.");
 }
 
 function getWebviewContent(unicode, panel) {
@@ -229,6 +207,5 @@ async function fetchEmojis() {
 }
 
 module.exports = {
-	activate,
-	deactivate
+	activate
 }
