@@ -17,7 +17,7 @@ async function activate(context) {
 		const window = new Window()
 		window.document.write(html);
 
-		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n*/, "");
+		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n\n*/, "");
 
 		const metaCSP = window.document.querySelector('meta[http-equiv="Content-Security-Policy"]');
 		const orgCSP = metaCSP.getAttribute("content").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
@@ -89,7 +89,7 @@ async function deactivate() {
 
 	async function uninstallEmoji() {
 		let html = await fs.promises.readFile(htmlFile, "utf-8");
-		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n*/, "");
+		html = html.replace(/<!-- !! NOTO-EMOJI-START !! -->[\s\S]*?<!-- !! NOTO-EMOJI-END !! -->\n\n*/, "");
 		await fs.promises.writeFile(htmlFile, html, "utf-8");
 		vscode.window.showInformationMessage("Noto Emoji removed. Restart VS Code to apply changes.");
 	}
