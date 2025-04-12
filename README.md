@@ -19,7 +19,6 @@
 ## 🚀 Usage 🚀
 1. Press `Ctrl + Shift + P` to open the Command Palette.
 2. Type `Open Emoji On-Screen Keyboard` and select it from the list.
-3. Alternatively, use the shortcut `Alt + .` to quickly open the emoji keyboard.
 
 
 ## 📜 License 📜
