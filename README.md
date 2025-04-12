@@ -22,7 +22,7 @@
 
 
 ## 📜 License 📜
-All parts of this project, except the fonts, VSCode Emoji** © 2025 by MeowSkyKung is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). 🔖
+All parts of this project, except the fonts, **VSCode Emoji** © 2025 by MeowSkyKung is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). 🔖
 The fonts remain under the [SIL Open Font License](https://scripts.sil.org/OFL). 🔖
 
 
