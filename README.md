@@ -10,7 +10,7 @@
 
 ## 📥 Installation 📥
 ### Download & Setup
-1. Download and install the **VSCode Emoji** extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/). 💾
+1. Download and install the **VSCode Emoji** extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=MeowIsWorking.vscode-noto-emoji). 💾
 2. Enable the extension in VSCode. ✅
 3. Reload VSCode to apply the changes. 🔄
 4. Add Noto Emoji or Noto Color Emoji to Font Family. ➕
