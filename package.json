@@ -19,7 +19,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -37,6 +37,10 @@
   ],
   "scripts": {
     "lint": "eslint .",
+    "compile": "node ./esbuild.js",
+    "watch": "node ./esbuild.js --watch",
+    "package": "node ./esbuild.js --production",
+    "vscode:prepublish": "npm run package",
     "pretest": "npm run lint",
     "test": "vscode-test"
   },
@@ -46,7 +50,8 @@
     "@types/vscode": "^1.96.2",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.19.0"
+    "eslint": "^9.19.0",
+    "esbuild": "^0.20.0"
   },
   "dependencies": {
     "happy-dom": "^17.1.4"
