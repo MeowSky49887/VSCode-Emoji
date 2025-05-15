@@ -1,0 +1,8 @@
+.vscode/**
+node_modules/**
+extension.js
+esbuild.js
+eslint.config.js
+# Ensure the 'dist' directory is NOT ignored.
+# vsce will include what's needed based on package.json (main, icon)
+# and will exclude anything matching these patterns.
