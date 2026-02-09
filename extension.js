@@ -97,7 +97,6 @@ function getWebviewContent(unicode, panel) {
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>Emoji Categories</title>
-				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 				<link rel="preconnect" href="https://fonts.googleapis.com">
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 				<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
@@ -111,33 +110,43 @@ function getWebviewContent(unicode, panel) {
 						height: 100vh;
 						width: 100vw;
 					}
+					.tab-button {
+						font-size: 24px; 
+						padding: 16px; 
+						cursor: pointer;
+						background: none;
+						border: 0;
+					}
+					.tab-select {
+						background-color: rgba(0, 0, 0, 0.5);
+					}
 				</style>
 			</head>
 			<body>
-				<div id="emoji-container" class="h-full w-full" style="display: grid; grid-template-rows: 12.5% 87.5%;">
+				<div id="emoji-container" style="display: grid; grid-template-rows: 12.5% 87.5%; width: 100%; height: 100%;">
 	`
-	html += "<div class='flex space-x-2 border-b overflow-x-auto p-2'>";
+	html += `<div style="display: flex; border-bottom-style: solid; border-bottom-width: 1px; overflow-x: auto; height: 80px;">`;
 	var i = 0;
 	for (const [group, subgroups] of Object.entries(unicode)) {
 		let firstSubgroup = Object.keys(subgroups)[0];
 		let firstEmoji = subgroups[firstSubgroup][0];
-		html += `<button onclick="showTab(${i})" class="tab-button text-2xl px-4 py-2 rounded-t-lg cursor-pointer bg-${i === 0 ? 'black/50' : ''} transition " title="${group}">${firstEmoji}</button>`;
+		html += `<button onclick="showTab(${i})" class="tab-button ${i === 0 ? 'tab-select' : ''}" title="${group}">${firstEmoji}</button>`;
 		i++;
 	}
-	html += "</div>";
+	html += `</div>`;
 
 	var i = 0;
 	for (const [group, subgroups] of Object.entries(unicode)) {
-		html += `<div class="tab-content p-4 overflow-auto" style="display: ${i === 0 ? 'block' : 'none'};"><h1 class="text-xl font-bold text-center mb-4">${group}</h1>`;
+		html += `<div class="tab-content" style="display: ${i === 0 ? 'block' : 'none'}; overflow: auto; padding: 16px;"><h1 style="font-size: 20px; text-align: center; margin-bottom: 16px;">${group}</h1>`;
 		for (const [subgroup, emojis] of Object.entries(subgroups)) {
-			html += `<h2 class='text-lg font-semibold mt-4'>${subgroup}</h2>`;
-			html += "<div class='flex flex-wrap gap-2 p-2'>";
+			html += `<h2 style="font-size: 16px; margin-top: 16px;">${subgroup}</h2>`;
+			html += `<div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px;">`;
 			for (const emoji of emojis) {
-				html += `<button class='text-2xl p-2 rounded cursor-pointer' onclick='use(this)'>${emoji}</button>`;
+				html += `<button style="font-size: 24px; padding: 8px; background: none; border: 0;" onclick="use(this)">${emoji}</button>`;
 			}
-			html += "</div>";
+			html += `</div>`;
 		}
-		html += "</div>";
+		html += `</div>`;
 		i++;
 	}
 	html += `
@@ -158,7 +167,7 @@ function getWebviewContent(unicode, panel) {
 							tab.style.display = (index === tabIndex) ? 'block' : 'none';
 						});
 						document.querySelectorAll('.tab-button').forEach((btn, index) => {
-							btn.classList.toggle('bg-black/50', index === tabIndex);
+							btn.classList.toggle('tab-select', index === tabIndex);
 						});
 					}
 				</script>

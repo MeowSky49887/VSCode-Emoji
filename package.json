@@ -3,7 +3,7 @@
 	"displayName": "VSCode Emoji",
 	"description": "Noto Emoji for VSCode",
 	"icon": "VSCodeEmoji.png",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"publisher": "MeowIsWorking",
 	"license": "CC-BY-SA-4.0",
 	"repository": {
@@ -27,14 +27,14 @@
 				"title": "Open Emoji On-Screen Keyboard",
 				"category": "Noto Emoji"
 			}
+		],
+		"keybindings": [
+			{
+				"command": "notoEmoji.open",
+				"key": "alt+."
+			}
 		]
 	},
-	"keybindings": [
-		{
-			"command": "notoEmoji.open",
-			"key": "alt+."
-		}
-	],
 	"scripts": {
 		"lint": "eslint .",
 		"pretest": "npm run lint",
@@ -52,8 +52,8 @@
 		"happy-dom": "^17.1.4"
 	},
 	"__metadata": {
-		"installedTimestamp": 1765263286634,
+		"installedTimestamp": 1770620654236,
 		"targetPlatform": "undefined",
-		"size": 14227626
+		"size": 14227595
 	}
 }
