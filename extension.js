@@ -7,12 +7,12 @@ const appDir = require.main ? path.dirname(require.main.filename) : globalThis._
 if (!appDir) return vscode.window.showInformationMessage("Unable to locate VS Code installation path. Please Reinstall VSCode.");
 
 const base = path.join(appDir, "vs", "code");
-let htmlFile = path.join(base, "electron-sandbox", "workbench", "workbench.html");
+let htmlFile = path.join(base, "electron-browser", "workbench", "workbench.html");
 if (!fs.existsSync(htmlFile)) return vscode.window.showInformationMessage("Unable to locate workbench.html. Please Reinstall VSCode.");
 	
 async function activate(context) {
 	async function installEmoji() {
-		const backupFile = path.join(base, "electron-sandbox", "workbench", "workbench.html.backup");
+		const backupFile = path.join(base, "electron-browser", "workbench", "workbench.html.backup");
 	
 		let html = await fs.promises.readFile(htmlFile, "utf-8");
 	

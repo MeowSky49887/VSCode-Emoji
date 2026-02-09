@@ -1,54 +1,59 @@
 {
-  "name": "vscode-noto-emoji",
-  "displayName": "VSCode Emoji",
-  "description": "Noto Emoji for VSCode",
-  "icon": "VSCodeEmoji.png",
-  "version": "0.0.5",
-  "publisher": "MeowIsWorking",
-  "license": "CC-BY-SA-4.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MeowSky49887/VSCode-Emoji"
-  },
-  "engines": {
-    "vscode": "^1.97.0"
-  },
-  "categories": [
-    "Visualization"
-  ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "main": "./extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "notoEmoji.open",
-        "title": "Open Emoji On-Screen Keyboard",
-        "category": "Noto Emoji"
-      }
-    ]
-  },
-  "keybindings": [
-    {
-      "command": "notoEmoji.open",
-      "key": "alt+."
-    }
-  ],
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "@types/vscode": "^1.97.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.19.0"
-  },
-  "dependencies": {
-    "happy-dom": "^17.1.4"
-  }
+	"name": "vscode-noto-emoji",
+	"displayName": "VSCode Emoji",
+	"description": "Noto Emoji for VSCode",
+	"icon": "VSCodeEmoji.png",
+	"version": "0.0.6",
+	"publisher": "MeowIsWorking",
+	"license": "CC-BY-SA-4.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MeowSky49887/VSCode-Emoji"
+	},
+	"engines": {
+		"vscode": "^1.97.0"
+	},
+	"categories": [
+		"Visualization"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "notoEmoji.open",
+				"title": "Open Emoji On-Screen Keyboard",
+				"category": "Noto Emoji"
+			}
+		]
+	},
+	"keybindings": [
+		{
+			"command": "notoEmoji.open",
+			"key": "alt+."
+		}
+	],
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.10",
+		"@types/node": "20.x",
+		"@types/vscode": "^1.97.0",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.4.1",
+		"eslint": "^9.19.0"
+	},
+	"dependencies": {
+		"happy-dom": "^17.1.4"
+	},
+	"__metadata": {
+		"installedTimestamp": 1765263286634,
+		"targetPlatform": "undefined",
+		"size": 14227626
+	}
 }
